@@ -20,16 +20,13 @@ async def on_ready():
 async def on_message(message):
     if message.author.bot == False and bot.user.mentioned_in(message):
         prompt = message.clean_content.replace('@Picossa', '')
-        print(prompt)
         global free_to_generate
         new_data = {"prompt": prompt,"n": 1,"size": "512x512","response_format": "url"}
-        print(new_data)        
         post_response = requests.post("https://api.openai.com/v1/images/generations", json=new_data, headers=headers)
         post_response_json = post_response.json()
-        print(post_response_json)
-        if (post_response_json["error"]):
-            await message.channel.send("prompt interdit car : [" + post_response_json["error"]["message"] + "]")
+        if (post_response_json.get("error") == None):
+            await message.channel.send(post_response_json["data"][0]["url"])
             return
-        await message.channel.send(post_response_json["data"][0]["url"])
+        await message.channel.send("prompt interdit car : [" + post_response_json["error"]["message"] + "]")
         
 bot.run(picossa_token)
