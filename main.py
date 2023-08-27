@@ -20,7 +20,6 @@ async def on_ready():
 async def on_message(message):
     if message.author.bot == False and bot.user.mentioned_in(message):
         prompt = message.clean_content.replace('@Picossa', '')
-        global free_to_generate
         new_data = {"prompt": prompt,"n": 1,"size": "512x512","response_format": "url"}
         post_response = requests.post("https://api.openai.com/v1/images/generations", json=new_data, headers=headers)
         post_response_json = post_response.json()
