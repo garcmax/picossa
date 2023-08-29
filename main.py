@@ -24,7 +24,15 @@ async def on_message(message):
         post_response = requests.post("https://api.openai.com/v1/images/generations", json=new_data, headers=headers)
         post_response_json = post_response.json()
         if (post_response_json.get("error") == None):
-            await message.channel.send(post_response_json["data"][0]["url"])
+            image = post_response_json["data"][0]["url"]
+            response = requests.get(image)
+            if response.status_code:
+                fp = open('image01.webp', 'wb')
+                fp.write(response.content)
+                fp.close()
+                await message.channel.send(file=discord.File('image01.webp'))
+                return
+            await message.channel.send("J'ai que l'url pour cette image : " + post_response_json["data"][0]["url"])
             return
         await message.channel.send("prompt interdit car : [" + post_response_json["error"]["message"] + "]")
         
