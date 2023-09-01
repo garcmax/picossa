@@ -43,6 +43,10 @@ async def on_message(message):
 @bot.command()
 async def credits(ctx):
     credits_with_currency = get_remaining_credits()
+    if (credits_with_currency is None):
+        print(f'credits is none.')
+        await ctx.send(f'Non.')    
+        return
     credits_str = credits_with_currency.replace("$", "")
     credits = float(credits_str)
     remaining_images = credits / 0.018 #0.018 because we use 512x512 images
