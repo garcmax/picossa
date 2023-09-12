@@ -34,12 +34,16 @@ def login():
     try:
         global needToRefresh
         needToRefresh = False
+        print(f"get username")
         username_field=driver.find_element(By.ID, "username")
         username_field.send_keys(username)
+        print(f"get button")
         continueButton=driver.find_element(By.NAME, "action")
         continueButton.click()
+        print(f"get password")
         password_field=driver.find_element(By.ID, "password")
         password_field.send_keys(password)
+        print(f"get button")
         WebDriverWait(driver, 10)
         WebDriverWait(driver, 5).until(EC.element_to_be_clickable(("xpath", "/html/body/div/main/section/div/div/div/form/div[3]/button"))).click()
     except Exception as e:
