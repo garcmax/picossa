@@ -9,6 +9,7 @@ import os
 
 options = webdriver.FirefoxOptions() 
 options.headless = True 
+options.add_argument("--disable-cache")
 driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options=options)
 url = "https://platform.openai.com/account/billing/overview" 
 driver.get(url)
@@ -49,14 +50,18 @@ def extract_remaining_credits():
     try:
         if needToRefresh:
             print(f'{"refeshing : "}{driver.current_url}')
-            driver.refresh
+            driver.refresh()
+            driver.get(driver.current_url)
+            driver.application_cache
+            WebDriverWait(driver, 5)
         print(f'{"trying to get credits"}')
         WebDriverWait(driver, 20).until(regex_to_be_present_in_element(("xpath", "/html/body/div[1]/div[1]/div/div[2]/div[2]/div/div[1]/div/div[1]/div[2]"), r"^\$.*"))
         credits=driver.find_element(By.CSS_SELECTOR, ".billing-credit-balance-value")
         needToRefresh = True
+        print(f'{"remaining credit : ["}{credits.text}{"]"}')
         return credits.text
     except Exception as e:
-        print(f'{"exception when trying to extract credits"}{e}')
+        print(f'{"exception when trying to extract credits : "}{e}')
 
 def get_remaining_credits():
     try:
