@@ -22,7 +22,7 @@ async def on_message(message):
     if message.author.bot == False and bot.user.mentioned_in(message):
         prompt = message.clean_content.replace('@Picossa', '')
         print(f'{"prompt : "}{"["}{prompt}{"]"}')
-        new_data = {"prompt": prompt,"n": 1,"size": "512x512","response_format": "url"}
+        new_data = {"prompt": prompt,"n": 1,"size": "1024x1024","response_format": "url", "model": "dall-e-3"}
         post_response = requests.post("https://api.openai.com/v1/images/generations", json=new_data, headers=headers)
         post_response_json = post_response.json()
         if (post_response_json.get("error") == None):
