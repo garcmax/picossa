@@ -11,10 +11,16 @@ openai_token = os.getenv('OPENAI_TOKEN')
 picossa_token = os.getenv('PICOSSA_TOKEN')
 
 headers = {"Authorization": "Bearer " + openai_token}
+hal = ""
 
 @bot.event
 async def on_ready():
     print(f"Successfully logged in as {bot.user.name}!")
+    hal = discord.utils.get(bot.users, name="USERNAME", discriminator="1234")
+    if hal is None:
+        print("User not found")
+    else:
+        print(f"{hal.mention} is the best")
 
 @bot.event
 async def on_message(message):
