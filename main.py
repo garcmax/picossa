@@ -9,14 +9,15 @@ intents.message_content = True
 bot = commands.Bot(intents = intents, command_prefix='!')
 openai_token = os.getenv('OPENAI_TOKEN')
 picossa_token = os.getenv('PICOSSA_TOKEN')
-
+hal_name = os.getenv('HAL_NAME')
+hal_discriminator = os.getenv('HAL_DISCRIMINATOR')
 headers = {"Authorization": "Bearer " + openai_token}
 hal = ""
 
 @bot.event
 async def on_ready():
     print(f"Successfully logged in as {bot.user.name}!")
-    hal = discord.utils.get(bot.users, name="USERNAME", discriminator="1234")
+    hal = discord.utils.get(bot.users, name=hal_name, discriminator=hal_discriminator)
     if hal is None:
         print("User not found")
     else:
